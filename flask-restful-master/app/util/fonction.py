@@ -3,10 +3,10 @@ from werkzeug.utils import secure_filename
 import os, base64, imghdr, re
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, get_jwt
 from flask import jsonify
-# import face_recognition
-# from PIL import Image
-# from io import BytesIO
-# import numpy as np
+import face_recognition
+from PIL import Image
+from io import BytesIO
+import numpy as np
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
@@ -82,33 +82,33 @@ def getMonId():
     return json.loads(current)['id']
 
 
-# def reconnaissance_faciale(user_photos,photo):
-#     images = [face_recognition.load_image_file(p) for p in user_photos]
-#     encoded_images = [face_recognition.face_encodings(img)[0] for img in images]
+def reconnaissance_faciale(user_photos,photo):
+    images = [face_recognition.load_image_file(p) for p in user_photos]
+    encoded_images = [face_recognition.face_encodings(img)[0] for img in images]
 
-#     a_trouver = base64_toencode(photo)
-#     results = face_recognition.compare_faces(encoded_images, a_trouver)
-#     print(results)
-#     return results
+    a_trouver = base64_toencode(photo)
+    results = face_recognition.compare_faces(encoded_images, a_trouver)
+    print(results)
+    return results
 
-# def base64_toencode(photo):
-#     image_data = base64.b64decode(photo)
+def base64_toencode(photo):
+    image_data = base64.b64decode(photo)
 
-#     image_2 = Image.open(BytesIO(image_data))
-#     image_2_np = np.array(image_2)
-#     face_encodings_2 = face_recognition.face_encodings(image_2_np)
+    image_2 = Image.open(BytesIO(image_data))
+    image_2_np = np.array(image_2)
+    face_encodings_2 = face_recognition.face_encodings(image_2_np)
 
-#     if len(face_encodings_2) > 0:
-#         face_encoding_2 = face_encodings_2[0]
-#         return face_encoding_2
-#     else:
-#         print("Aucun visage n'a été détecté dans l'image.")
-#         return False
+    if len(face_encodings_2) > 0:
+        face_encoding_2 = face_encodings_2[0]
+        return face_encoding_2
+    else:
+        print("Aucun visage n'a été détecté dans l'image.")
+        return False
 
-# def login_faciale(users, photo):
-#     photos = [user.photo for user in users]
-#     results = reconnaissance_faciale(photos,photo)
-#     for i in range(len(results)):
-#         if results[i] == True:
-#             return users[i]
-#     return None
+def login_faciale(users, photo):
+    photos = [user.photo for user in users]
+    results = reconnaissance_faciale(photos,photo)
+    for i in range(len(results)):
+        if results[i] == True:
+            return users[i]
+    return None

@@ -2,7 +2,7 @@ import json
 from app.models.mission import MissionModel
 import requests
 
-api_key = "sk-proj-h0nF6h87OEsBnZuUkgbjT3BlbkFJWUUxdoaYjc6cqzJQyxh8"
+api_key = ""
 
 def requete_openai(texte):
     url = "https://api.openai.com/v1/chat/completions"

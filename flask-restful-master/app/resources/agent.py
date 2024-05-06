@@ -11,7 +11,7 @@ from app.util.encoder import AlchemyEncoder
 from app.models.mission import MissionModel
 import json
 from app.util.fonction import getMonId
-# from app.util.fonction import login_faciale
+from app.util.fonction import login_faciale
 from app.util.logz import create_logger
 
 
@@ -50,18 +50,17 @@ class AgentReconnaissance(Resource):
 
 
     def post(self):
-        # data = AgentReconnaissance.parser.parse_args() 
-        # photo = data['photo']
+        data = AgentReconnaissance.parser.parse_args() 
+        photo = data['photo']
 
-        # users = AgentModel.query.all()
-        # agent = login_faciale(users, photo)
-        # if agent is None:
-        #     return json.dumps({'access_token':None}), 401
-        # else:
-        #     access_token = create_access_token(
-        #         identity=json.dumps(agent, cls=AlchemyEncoder), additional_claims={"roles": "admin"})
-        #     return jsonify(access_token=access_token)
-        return 0
+        users = AgentModel.query.all()
+        agent = login_faciale(users, photo)
+        if agent is None:
+            return json.dumps({'access_token':None}), 401
+        else:
+            access_token = create_access_token(
+                identity=json.dumps(agent, cls=AlchemyEncoder), additional_claims={"roles": "admin"})
+            return jsonify(access_token=access_token)
 
 
 class AgentList(Resource):
